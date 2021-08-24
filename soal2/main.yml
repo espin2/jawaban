@@ -1,0 +1,31 @@
+- hosts: trusty
+  gather_facts: no
+  become: yes
+  tasks:
+  - name: Copy app.py to Vagrant Server
+    copy:
+      src: /$PWD/app.py
+      dest: /home/vagrant/app.py
+  - name: Copy wsgi.py to Vagrant Server
+    copy:
+      src: /$PWD/wsgi.py
+      dest: /home/vagrant/wsgi.py
+  - name: Copy app.service to Vagrant Server
+    copy:
+      src: /$PWD/app.service
+      dest: /etc/systemd/system/app.service
+  - name: install pip3
+    apt:
+      name: python3-pip
+      state: latest
+  - name: install requirements.txt
+    pip:
+      requirements: /vagrant/requirements.txt
+      executable: pip3
+  - name: install gunicorn
+    apt:
+      name: gunicorn
+
+  - name: run app.py
+    shell: |
+      systemctl start app && systemctl enable app
