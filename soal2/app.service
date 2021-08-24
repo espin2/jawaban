@@ -1,0 +1,10 @@
+[Unit]
+Description=Gunicorn instance to serve myproject
+After=network.target
+
+[Service]
+WorkingDirectory=/home/vagrant/
+ExecStart=gunicorn --workers 3 --bind 0.0.0.0:5000 -m 007 wsgi:app
+
+[Install]
+WantedBy=multi-user.target
