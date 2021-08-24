@@ -1,0 +1,8 @@
+/var/log/nginx/*.log {
+    size 100M
+    weekly
+    compress
+    rotate 4
+    missingok
+    create 0664 root root
+}
