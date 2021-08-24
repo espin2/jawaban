@@ -1,5 +1,48 @@
 # Jawaban no. 1
-Vagrantfile
+1. konfigurasi logrotate
+```
+nano /etc/logrotate.d/nginx
+```
+```
+/var/log/nginx/*.log {
+    size 100M
+    weekly
+    compress
+    rotate 4
+    missingok
+    create 0664 root root
+}
+
+```
+2. testing membuat file log lebih besar dari 100MB
+```
+$ fallocate -l 101M espin.log
+$ fallocate -l 101M test.log
+```
+3. menjalankan logrotate secara manual untuk testing
+```
+logrotate /etc/logrotate.d/nginx
+```
+4. hasil setelah di logrorate, log akan di reset kembali dan log sebelumnya di compress menjadi .gz
+![image](https://user-images.githubusercontent.com/51534984/130612086-dd86de6c-8c61-4655-a745-a9be0d5c4713.png)
+
+5. masuk ke crontab -e
+```
+crontab -e
+```
+6. tambahkan script untuk menghapus log yang berada di /var/log/nginx yang sudah 7 hari. dan setiap 7 hari log akan dihapus
+```
+@weekly find /var/log/nginx/*.log -mtime +7 -type f -exec rm -rf {} \;
+```
+# Jawaban no. 2
+1. buat dan masuk ke folder untuk menyimpan file vagrant
+```
+mkdir /root/espin-python && cd/root/espin-python
+```
+2. tambahkan Vagrantfile (Vagrantfile menyesuaikan soal yang diberikan)
+```
+nano Vagrantfile
+```
 ```
 Vagrant.configure("2") do |config|
 config.vm.box = "bento/ubuntu-20.04"
@@ -27,7 +70,7 @@ end
 
 
 ```
-main.yml
+3. tambahkan script ansible main.yml
 ```
 - hosts: trusty
   gather_facts: no
@@ -52,27 +95,7 @@ main.yml
 
 ```
 ![image](https://user-images.githubusercontent.com/51534984/130605423-fb9fda6c-9281-41af-9f50-af6f250618ee.png)
-# Jawaban no. 2
-```
-nano /etc/logrotate.d/nginx
-```
-```
-/var/log/nginx/*.log {
-    size 100M
-    weekly
-    compress
-    rotate 4
-    missingok
-    create 0664 root root
-}
 
-```
-```
-crontab -e
-```
-```
-@weekly find /var/log/nginx/*.log -mtime +7 -type f -exec rm -rf {} \;
-```
 # Jawaban no. 3
 ```
 %{TIMESTAMP_ISO8601:date}\|%{WORD:serviceid}\{\"channelSessionId\":\"%{WORD:channelSessionId}\",\"remark\":\"%{WORD:remark}\",\"OriginatorConversationID\":\"%{WORD:OriginatorConversationID}\",\"Msisdn\":\"%{WORD:Msisdn}\",\"CommandId\":\"%{WORD:CommandId}"
