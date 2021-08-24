@@ -43,9 +43,9 @@ mkdir /root/espin-python && cd/root/espin-python
 ```
 git clone https://github.com/lumbans/devops-la-challenges
 ```
-3. copy file app.py ke folder espin-python
+3. copy file app.py dan requirements.txt ke folder espin-python
 ```
-cp devops-la-challenges/app.py /root/espin-python/
+cp devops-la-challenges/app.py /root/espin-python/ && cp devops-la-challenges/requirements.txt /root/espin-python/
 ```
 4. buat ```wsgi.py``` untuk gunicorn
 ```
